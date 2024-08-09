@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ product.name }}</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <h1>{{ product.name }}</h1>
-        <p><strong>Category:</strong> {{ product.category.name }}</p>
-        <p><strong>Description:</strong> {{ product.description }}</p>
-        <p><strong>Price:</strong> ${{ product.price }}</p>
-    </div>
-</body>
-</html>
+{% extends 'catalog/base.html' %}
+
+{% block title %}
+    {{ object.name }} - My Shop
+{% endblock %}
+
+{% block content %}
+    <h1>{{ object.name }}</h1>
+    <p>{{ object.description }}</p>
+    <p><strong>Цена:</strong> {{ object.price }} руб.</p>
+    <a href="{% url 'index' %}" class="btn btn-secondary">Вернуться на главную</a>
+{% endblock %}

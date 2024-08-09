@@ -20,3 +20,17 @@ def product_detail(request, pk):
     }
     
     return render(request, 'catalog/product_detail.html', context)
+
+def index_view(request):
+    products = Product.objects.all()
+
+    context = {'object_list': products}
+
+    return render(request, 'catalog/index.html', context)
+
+def product_detail_view(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+
+    context = {'object': product}
+
+    return render(request, 'catalog/product_detail.html', context)
