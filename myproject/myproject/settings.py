@@ -22,6 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-2c=(q$a#8s5q!n!d)+e9e8sa-i^iej&l01$aq(fh^*9-nf88#j'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -38,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'catalog',
+    'crispy_forms',
+    'crispy_bootstrap4',
 ]
 
 MEDIA_URL = '/media/'

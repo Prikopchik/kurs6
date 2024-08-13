@@ -1,27 +1,16 @@
 from django.shortcuts import redirect, render, get_object_or_404
 
-from .forms import ProductForm 
-from .models import Product
+from .forms import ContactForm, ProductForm , ProductVersionForm , BlogPostForm
+from .models import Product, Version , BlogPost , ProductVersion
 from django.core.paginator import Paginator
-from django.views.generic import TemplateView
-from django.views.generic.edit import FormView
 from django import forms
-from django.views.generic import ListView
-from django.views.generic import DetailView
-from django.views.generic.edit import CreateView
-from django.views.generic import UpdateView, DeleteView
+from django.views.generic import ListView , UpdateView, DeleteView ,TemplateView, DetailView
+from django.views.generic.edit import CreateView , FormView
 from django.urls import reverse_lazy, reverse
-from .models import BlogPost
 from django.utils.text import slugify
-from .forms import BlogPostForm
 
 class HomeView(TemplateView):
     template_name = 'catalog/home.html'
-
-class ContactForm(forms.Form):
-    name = forms.CharField(max_length=100)
-    email = forms.EmailField()
-    message = forms.CharField(widget=forms.Textarea)
 
 class ContactView(FormView):
     template_name = 'catalog/contact.html'
@@ -96,3 +85,70 @@ class BlogPostDeleteView(DeleteView):
     model = BlogPost
     template_name = 'catalog/blogpost_confirm_delete.html'
     success_url = reverse_lazy('blog_list')
+
+class ProductListView(ListView):
+    model = Product
+    template_name = 'catalog/product_list.html'
+    context_object_name = 'products'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        products_with_versions = []
+
+        for product in context['products']:
+            try:
+                current_version = product.versions.get(is_current=True)
+            except Version.DoesNotExist:
+                current_version = None
+            
+            products_with_versions.append({
+                'product': product,
+                'current_version': current_version
+            })
+
+        context['products_with_versions'] = products_with_versions
+        return context
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'catalog/product_detail.html'
+    context_object_name = 'product'
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_form.html'
+    success_url = reverse_lazy('product_list')
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_form.html'
+    success_url = reverse_lazy('product_list')
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'catalog/product_confirm_delete.html'
+    success_url = reverse_lazy('product_list')
+
+class ProductVersionCreateView(CreateView):
+    model = ProductVersion
+    form_class = ProductVersionForm
+    template_name = 'catalog/product_version_form.html'
+    success_url = reverse_lazy('product_version_list')
+
+class ProductVersionUpdateView(UpdateView):
+    model = ProductVersion
+    form_class = ProductVersionForm
+    template_name = 'catalog/product_version_form.html'
+    success_url = reverse_lazy('product_version_list')
+
+class ProductVersionListView(ListView):
+    model = ProductVersion
+    template_name = 'catalog/product_version_list.html'
+    context_object_name = 'product_versions'
+
+class ProductVersionDeleteView(DeleteView):
+    model = ProductVersion
+    template_name = 'catalog/product_version_confirm_delete.html'
+    success_url = reverse_lazy('product_version_list')

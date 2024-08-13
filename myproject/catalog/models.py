@@ -1,7 +1,7 @@
 from django.db import models
-from django.db import models
 from django.utils.text import slugify
 from django.urls import reverse
+from django import forms
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -13,6 +13,7 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
+
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
@@ -51,3 +52,13 @@ class BlogPost(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog_detail', kwargs={'slug': self.slug})
+
+
+class Version(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='versions')
+    version_number = models.CharField(max_length=50)
+    version_name = models.CharField(max_length=100)
+    is_current = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.version_name} ({self.version_number})"
