@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product, Category,Version, BlogPost
+from .models import Product, Version, BlogPost
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 

@@ -16,7 +16,7 @@ class ContactView(FormView):
     success_url = '/contact/'
 
     def form_valid(self, form):
-        print(f"Name: {form.cleaned_data['name']}, Email: {form.cleaned_data['email']}, Message: {form.cleaned_data['message']}")
+        print(f"Name: {form.clean_name['name']}, Email: {form.cleaned_data['email']}, Message: {form.cleaned_data['message']}")
         return super().form_valid(form)
 
 class IndexView(ListView):
@@ -78,7 +78,7 @@ class ProductListView(ListView):
 
         for product in context['products']:
             try:
-                current_version = product.versions.get(is_current=True)
+                current_version = product.version.get(is_current=True)
             except Version.DoesNotExist:
                 current_version = None
             
