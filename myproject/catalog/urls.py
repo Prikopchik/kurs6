@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.conf import settings
-from .views import ProductListView, ProductDetailView, ProductCreateView, ProductUpdateView, ProductDeleteView, ProductVersionCreateView, ProductVersionDeleteView, ProductVersionListView, ProductVersionUpdateView
+from .views import ProductListView, ProductDetailView, ProductCreateView, ProductUpdateView, ProductDeleteView, VersionCreateView, VersionDeleteView, VersionListView, VersionUpdateView
 
 urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
@@ -20,8 +20,8 @@ urlpatterns = [
     path('products/create/', ProductCreateView.as_view(), name='product_create'),
     path('products/<int:pk>/update/', ProductUpdateView.as_view(), name='product_update'),
     path('products/<int:pk>/delete/', ProductDeleteView.as_view(), name='product_delete'),
-    path('product-version/', ProductVersionListView.as_view(), name='product_version_list'),
-    path('product-version/create/', ProductVersionCreateView.as_view(), name='product_version_create'),
-    path('product-version/<int:pk>/edit/', ProductVersionUpdateView.as_view(), name='product_version_edit'),
-    path('product-version/<int:pk>/delete/', ProductVersionDeleteView.as_view(), name='product_version_delete'),
+    path('product-version/', VersionListView.as_view(), name='product_version_list'),
+    path('product-version/create/', VersionCreateView.as_view(), name='product_version_create'),
+    path('product-version/<int:pk>/edit/', VersionUpdateView.as_view(), name='product_version_edit'),
+    path('product-version/<int:pk>/delete/', VersionDeleteView.as_view(), name='product_version_delete'),
 ]
