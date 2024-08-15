@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product, Category, ProductVersion, BlogPost
+from .models import Product, Category,Version, BlogPost
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
@@ -48,9 +48,9 @@ class BlogPostForm(forms.ModelForm):
             raise forms.ValidationError("Содержимое содержит запрещенные слова.")
         return content
 
-class ProductVersionForm(forms.ModelForm):
+class VersionForm(forms.ModelForm):
     class Meta:
-        model = ProductVersion
+        model = Version
         fields = ['product', 'version_number', 'version_name', 'is_current']
 
     def __init__(self, *args, **kwargs):

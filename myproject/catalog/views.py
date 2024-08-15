@@ -1,9 +1,7 @@
 from django.shortcuts import redirect, render, get_object_or_404
 
-from .forms import ContactForm, ProductForm , ProductVersionForm , BlogPostForm
-from .models import Product, Version , BlogPost , ProductVersion
-from django.core.paginator import Paginator
-from django import forms
+from .forms import ContactForm, ProductForm , VersionForm , BlogPostForm
+from .models import Product , BlogPost , Version
 from django.views.generic import ListView , UpdateView, DeleteView ,TemplateView, DetailView
 from django.views.generic.edit import CreateView , FormView
 from django.urls import reverse_lazy, reverse
@@ -24,24 +22,7 @@ class ContactView(FormView):
 class IndexView(ListView):
     model = Product
     template_name = 'catalog/index.html'
-    context_object_name = 'object_list'
-
-class ProductDetailView(DetailView):
-    model = Product
-    template_name = 'catalog/product_detail.html'
-    context_object_name = 'object'
-
-class ProductCreateView(CreateView):
-    model = Product
-    form_class = ProductForm
-    template_name = 'catalog/create_product.html'
-    success_url = '/products/'
-
-class ProductListView(ListView):
-    model = Product
-    template_name = 'catalog/product_list.html'
-    context_object_name = 'page_obj'
-    paginate_by = 10 
+    context_object_name = 'object_list' 
 
 class BlogPostListView(ListView):
     model = BlogPost
@@ -131,24 +112,24 @@ class ProductDeleteView(DeleteView):
     template_name = 'catalog/product_confirm_delete.html'
     success_url = reverse_lazy('product_list')
 
-class ProductVersionCreateView(CreateView):
-    model = ProductVersion
-    form_class = ProductVersionForm
+class VersionCreateView(CreateView):
+    model = Version
+    form_class = VersionForm
     template_name = 'catalog/product_version_form.html'
     success_url = reverse_lazy('product_version_list')
 
-class ProductVersionUpdateView(UpdateView):
-    model = ProductVersion
-    form_class = ProductVersionForm
+class VersionUpdateView(UpdateView):
+    model = Version
+    form_class = VersionForm
     template_name = 'catalog/product_version_form.html'
     success_url = reverse_lazy('product_version_list')
 
-class ProductVersionListView(ListView):
-    model = ProductVersion
+class VersionListView(ListView):
+    model = Version
     template_name = 'catalog/product_version_list.html'
     context_object_name = 'product_versions'
 
-class ProductVersionDeleteView(DeleteView):
-    model = ProductVersion
+class VersionDeleteView(DeleteView):
+    model = Version
     template_name = 'catalog/product_version_confirm_delete.html'
     success_url = reverse_lazy('product_version_list')
