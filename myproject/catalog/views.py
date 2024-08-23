@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render, get_object_or_404
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ContactForm, ProductForm , VersionForm , BlogPostForm
 from .models import Product , BlogPost , Version
 from django.views.generic import ListView , UpdateView, DeleteView ,TemplateView, DetailView
@@ -67,7 +67,7 @@ class BlogPostDeleteView(DeleteView):
     template_name = 'catalog/blogpost_confirm_delete.html'
     success_url = reverse_lazy('blog_list')
 
-class ProductListView(ListView):
+class ProductListView(LoginRequiredMixin,ListView):
     model = Product
     template_name = 'catalog/product_list.html'
     context_object_name = 'products'
@@ -90,24 +90,28 @@ class ProductListView(ListView):
         context['products_with_versions'] = products_with_versions
         return context
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin,DetailView):
     model = Product
     template_name = 'catalog/product_detail.html'
     context_object_name = 'product'
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin,CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('product_list')
 
-class ProductUpdateView(UpdateView):
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+    
+class ProductUpdateView(LoginRequiredMixin,UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('product_list')
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin,DeleteView):
     model = Product
     template_name = 'catalog/product_confirm_delete.html'
     success_url = reverse_lazy('product_list')

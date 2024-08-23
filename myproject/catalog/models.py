@@ -2,6 +2,8 @@ from django.db import models
 from django.utils.text import slugify
 from django.urls import reverse
 
+from myproject.accounts.views import User
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -23,7 +25,8 @@ class Product(models.Model):
     manufactured_at = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    
     def __str__(self):
         return self.name
 

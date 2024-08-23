@@ -1,6 +1,9 @@
 from django.urls import path
+
+from myproject.accounts.views import CustomLoginView, RegisterView
 from . import views
 from .views import ProductListView, ProductDetailView, ProductCreateView, ProductUpdateView, ProductDeleteView, VersionCreateView, VersionDeleteView, VersionListView, VersionUpdateView
+
 
 urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
@@ -21,4 +24,7 @@ urlpatterns = [
     path('product-version/create/', VersionCreateView.as_view(), name='product_version_create'),
     path('product-version/<int:pk>/edit/', VersionUpdateView.as_view(), name='product_version_edit'),
     path('product-version/<int:pk>/delete/', VersionDeleteView.as_view(), name='product_version_delete'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('activate/<uidb64>/<token>/', RegisterView.activate, name='activate'),
+    path('login/', CustomLoginView.as_view(), name='login'),
 ]
