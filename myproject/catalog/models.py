@@ -26,13 +26,19 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    
+    is_published = models.BooleanField(default=False)
+
     def __str__(self):
         return self.name
 
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
+        permissions = [
+            ("can_unpublish_product", "Can unpublish a product"),
+            ("can_edit_description", "Can edit any product's description"),
+            ("can_edit_category", "Can edit any product's category"),
+        ]
 
 
 class BlogPost(models.Model):

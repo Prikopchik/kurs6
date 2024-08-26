@@ -1,3 +1,4 @@
+from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ContactForm, ProductForm , VersionForm , BlogPostForm
@@ -6,6 +7,7 @@ from django.views.generic import ListView , UpdateView, DeleteView ,TemplateView
 from django.views.generic.edit import CreateView , FormView
 from django.urls import reverse_lazy, reverse
 from django.utils.text import slugify
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 class HomeView(TemplateView):
     template_name = 'catalog/home.html'
@@ -111,6 +113,12 @@ class ProductUpdateView(LoginRequiredMixin,UpdateView):
     template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('product_list')
 
+    def dispatch(self, request, *args, **kwargs):
+        product = self.get_object()
+        if product.owner != self.request.user:
+            return HttpResponseForbidden("You are not allowed to edit this product.")
+        return super().dispatch(request, *args, **kwargs)
+
 class ProductDeleteView(LoginRequiredMixin,DeleteView):
     model = Product
     template_name = 'catalog/product_confirm_delete.html'
@@ -137,3 +145,25 @@ class VersionDeleteView(DeleteView):
     model = Version
     template_name = 'catalog/product_version_confirm_delete.html'
     success_url = reverse_lazy('product_version_list')
+
+class ProductUnpublishView(PermissionRequiredMixin, UpdateView):
+    model = Product#+
+    permission_required = 'yourapp.can_unpublish_product'
+    template_name = 'product_unpublish.html'
+    fields = ['is_published']
+
+    def form_valid(self, form):
+        form.instance.is_published = False
+        return super().form_valid(form)
+
+class ProductEditDescriptionView(PermissionRequiredMixin, UpdateView):
+    model = Product
+    permission_required = 'yourapp.can_edit_description'
+    template_name = 'product_form.html'
+    fields = ['description']
+
+class ProductEditCategoryView(PermissionRequiredMixin, UpdateView):
+    model = Product
+    permission_required = 'yourapp.can_edit_category'
+    template_name = 'product_form.html'
+    fields = ['category']

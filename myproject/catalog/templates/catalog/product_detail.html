@@ -9,4 +9,8 @@
     <p>{{ object.description }}</p>
     <p><strong>Цена:</strong> {{ object.price }} руб.</p>
     <a href="{% url 'index' %}" class="btn btn-secondary">Вернуться на главную</a>
+
+    {% if product.owner == request.user %}
+        <a href="{% url 'product_edit' product.id %}">Edit Product</a>
+    {% endif %}
 {% endblock %}
