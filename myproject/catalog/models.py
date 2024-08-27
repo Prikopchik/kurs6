@@ -1,8 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from django.urls import reverse
-
-from myproject.accounts.views import User
+from accounts.views import User
 
 class Category(models.Model):
     name = models.CharField(max_length=100)

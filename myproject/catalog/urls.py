@@ -1,6 +1,6 @@
 from django.urls import path
 
-from myproject.accounts.views import CustomLoginView, RegisterView
+from accounts.views import CustomLoginView, RegisterView
 from . import views
 from .views import ProductListView, ProductDetailView, ProductCreateView, ProductUpdateView, ProductDeleteView, VersionCreateView, VersionDeleteView, VersionListView, VersionUpdateView
 
