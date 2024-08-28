@@ -148,7 +148,7 @@ class VersionDeleteView(DeleteView):
 
 class ProductUnpublishView(PermissionRequiredMixin, UpdateView):
     model = Product#+
-    permission_required = 'yourapp.can_unpublish_product'
+    permission_required = 'catalog.can_unpublish_product'
     template_name = 'product_unpublish.html'
     fields = ['is_published']
 
@@ -158,12 +158,12 @@ class ProductUnpublishView(PermissionRequiredMixin, UpdateView):
 
 class ProductEditDescriptionView(PermissionRequiredMixin, UpdateView):
     model = Product
-    permission_required = 'yourapp.can_edit_description'
+    permission_required = 'catalog.can_edit_description'
     template_name = 'product_form.html'
     fields = ['description']
 
 class ProductEditCategoryView(PermissionRequiredMixin, UpdateView):
     model = Product
-    permission_required = 'yourapp.can_edit_category'
+    permission_required = 'catalog.can_edit_category'
     template_name = 'product_form.html'
     fields = ['category']
