@@ -3,6 +3,7 @@ from django.urls import path
 from accounts.views import CustomLoginView, RegisterView
 from . import views
 from .views import ProductListView, ProductDetailView, ProductCreateView, ProductUpdateView, ProductDeleteView, VersionCreateView, VersionDeleteView, VersionListView, VersionUpdateView
+from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [

@@ -147,7 +147,7 @@ class VersionDeleteView(DeleteView):
     success_url = reverse_lazy('product_version_list')
 
 class ProductUnpublishView(PermissionRequiredMixin, UpdateView):
-    model = Product#+
+    model = Product
     permission_required = 'catalog.can_unpublish_product'
     template_name = 'product_unpublish.html'
     fields = ['is_published']
