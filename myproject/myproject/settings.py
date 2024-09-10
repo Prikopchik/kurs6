@@ -91,9 +91,9 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'myproject_db',
-        'USER': 'myproject_user',
-        'PASSWORD': 'my_password',
+        'NAME': 'yes_db',
+        'USER': 'yes_yes',
+        'PASSWORD': 'pass_pass',
         'HOST': 'localhost',
         'PORT': '5432',
     }

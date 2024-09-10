@@ -1,21 +1,28 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
-from django.db.utils import IntegrityError
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from accounts.models import CustomUser
+
+class CustomUserAdmin(UserAdmin):
+    model = CustomUser
+    list_display = ('email', 'is_staff', 'is_active')
+    list_filter = ('is_staff', 'is_active')
+    search_fields = ('email',)
+    ordering = ('email',)
+    
+    filter_horizontal = ('groups', 'user_permissions')
+
+admin.site.register(CustomUser, CustomUserAdmin)
 
 class Command(BaseCommand):
-    help = 'Создаёт суперпользователя, если он ещё не существует'
+    help = 'Create a superuser'
 
     def handle(self, *args, **kwargs):
         User = get_user_model()
-        try:
-            if not User.objects.filter(is_superuser=True).exists():
-                User.objects.create_superuser(
-                    username='admin',
-                    email='admin@example.com',
-                    password='adminpassword'
-                )
-                self.stdout.write(self.style.SUCCESS('Суперпользователь успешно создан'))
-            else:
-                self.stdout.write(self.style.WARNING('Суперпользователь уже существует'))
-        except IntegrityError:
-            self.stdout.write(self.style.ERROR('Ошибка при создании суперпользователя'))
+        if not User.objects.filter(email='admin@example.com').exists():
+            User.objects.create_superuser(
+                email='admin@example.com',
+                password='admin_password'
+            )
+            self.stdout.write(self.style.SUCCESS('Superuser created'))
