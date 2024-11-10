@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Product Versions</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Product</th>
+        <th>Version Number</th>
+        <th>Version Name</th>
+        <th>Is Current</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for version in product_versions %}
+      <tr>
+        <td>{{ version.id }}</td>
+        <td>{{ version.product }}</td>
+        <td>{{ version.version_number }}</td>
+        <td>{{ version.version_name }}</td>
+        <td>{{ version.is_current }}</td>
+        <td>
+          <a href="{% url 'product_version_edit' version.pk %}" class="btn btn-sm btn-warning">Edit</a>
+          <a href="{% url 'product_version_delete' version.pk %}" class="btn btn-sm btn-danger">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{% url 'product_version_create' %}" class="btn btn-primary">Create New Version</a>
+{% endblock %}
