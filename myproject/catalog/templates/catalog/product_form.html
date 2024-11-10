@@ -1,10 +1,7 @@
-{% extends 'base.html' %}
-
-{% block content %}
-  <h2>{% if object %}Update{% else %}Create{% endif %} Product</h2>
-  <form method="post" enctype="multipart/form-data">
+<h1>{% if form.instance.pk %}Редактировать{% else %}Создать{% endif %} продукт</h1>
+<form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">{% if object %}Update{% else %}Create{% endif %}</button>
-  </form>
-{% endblock %}
+    <button type="submit">Сохранить</button>
+</form>
+<a href="{% url 'product_list' %}">Назад к списку продуктов</a>
