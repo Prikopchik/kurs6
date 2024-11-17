@@ -8,6 +8,7 @@ from django.views.generic.edit import CreateView, FormView
 from django.urls import reverse_lazy, reverse
 from django.utils.text import slugify
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
 
 
 class HomeView(TemplateView):
@@ -115,6 +116,18 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     template_name = 'product_form.html'
     success_url = reverse_lazy('product_list')
 
+    def create_product(request):
+        if request.method == 'POST':
+            form = ProductForm(request.POST)
+            if form.is_valid():
+                product = form.save(commit=False)
+                product.owner = request.user
+                product.save()
+                return redirect('product_list')
+        else:
+            form = ProductForm()
+        return render(request, 'product_form.html', {'form': form})
+
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form)
@@ -137,6 +150,13 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'product_confirm_delete.html'
     success_url = reverse_lazy('product_list')
+
+    def delete_product(request, product_id):
+        product = get_object_or_404(Product, id=product_id)
+        if product.owner != request.user and not request.user.has_perm('app.delete_product'):
+            raise PermissionDenied("You do not have permission to delete this product.")
+        product.delete()
+        return redirect('product_list')
 
 
 class VersionCreateView(CreateView):
@@ -167,14 +187,19 @@ class VersionDeleteView(DeleteView):
 
 class ProductUnpublishView(PermissionRequiredMixin, UpdateView):
     model = Product
-    permission_required = 'catalog.can_unpublish_product'
     template_name = 'product_unpublish.html'
-    fields = ['is_published']
+    fields = []  
+    success_url = reverse_lazy('product_list')
+    permission_required = 'catalog.can_unpublish_product' 
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Product, pk=self.kwargs['pk'])
 
     def form_valid(self, form):
-        form.instance.is_published = False
+        product = form.save(commit=False)
+        product.is_published = False
+        product.save()
         return super().form_valid(form)
-
 
 class ProductEditDescriptionView(PermissionRequiredMixin, UpdateView):
     model = Product

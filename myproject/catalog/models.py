@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from django.urls import reverse
-from accounts.models import CustomUser
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -14,6 +14,9 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
+        permissions = [
+            ("can_unpublish_product", "Can unpublish product"),
+        ]
 
 
 class Product(models.Model):
@@ -25,11 +28,19 @@ class Product(models.Model):
     manufactured_at = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     is_published = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+
+
+    def unpublish_product(self):
+        """Отменяет публикацию продукта."""
+        self.is_published = False
+        self.save()
+
+
 
     class Meta:
         verbose_name = 'Product'

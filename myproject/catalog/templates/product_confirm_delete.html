@@ -1,3 +1,7 @@
+{% if product.owner == user or perms.app.delete_product %}
+    <a href="{% url 'delete_product' product.id %}">Delete</a>
+{% endif %}
+
 <h1>Удалить продукт</h1>
 <p>Вы уверены, что хотите удалить продукт "{{ product.name }}"?</p>
 <form method="post">
