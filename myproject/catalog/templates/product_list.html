@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Product List</h2>
+  <div class="row">
+    {% for item in products_with_versions %}
+      <div class="col-md-4">
+        <div class="card">
+          <img class="card-img-top" src="{{ item.product.image|media_url }}" alt="{{ item.product.name }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.product.name }}</h5>
+            <p class="card-text">{{ item.product.description|truncatewords:20 }}</p>
+
+            {% if item.current_version %}
+              <p class="card-text"><strong>Current Version:</strong> {{ item.current_version.version_name }} ({{ item.current_version.version_number }})</p>
+            {% endif %}
+            
+            <a href="{% url 'product_detail' item.product.pk %}" class="btn btn-primary">View Details</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

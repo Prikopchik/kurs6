@@ -1,0 +1,22 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}
+    Главная страница - My Shop
+{% endblock %}
+
+{% block content %}
+    <h1>Добро пожаловать в My Shop!</h1>
+    <div class="row">
+        {% for object in object_list %}
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ object.name }}</h5>
+                        <p class="card-text">{{ object.description|truncatechars:100 }}</p>
+                        <a href="{% url 'product_detail' object.pk %}" class="btn btn-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
