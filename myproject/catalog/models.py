@@ -3,6 +3,7 @@ from django.utils.text import slugify
 from django.urls import reverse
 from accounts.views import User
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -62,7 +63,8 @@ class BlogPost(models.Model):
 
 
 class Version(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='versions')
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name='versions')
     version_number = models.CharField(max_length=50)
     version_name = models.CharField(max_length=100)
     is_current = models.BooleanField(default=False)

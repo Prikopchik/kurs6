@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
+
 class RegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
 
@@ -22,5 +23,6 @@ class PasswordResetForm(forms.Form):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if not User.objects.filter(email=email).exists():
-            raise forms.ValidationError("Пользователь с таким email не найден.")
+            raise forms.ValidationError(
+                "Пользователь с таким email не найден.")
         return email

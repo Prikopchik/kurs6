@@ -25,7 +25,7 @@ class RegisterView(FormView):
 
     def form_valid(self, form):
         user = form.save(commit=False)
-        user.is_active = False 
+        user.is_active = False
         user.save()
 
         current_site = get_current_site(self.request)
@@ -40,7 +40,6 @@ class RegisterView(FormView):
         send_mail(subject, message, 'admin@example.com', [user.email])
 
         return redirect('registration_success')
-    
 
     def activate(request, uidb64, token):
         try:
@@ -56,7 +55,7 @@ class RegisterView(FormView):
             return redirect('activation_success')
         else:
             return render(request, 'activation_invalid.html')
-        
+
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
@@ -71,7 +70,8 @@ class PasswordResetView(FormView):
         user = User.objects.filter(email=email).first()
 
         if user:
-            new_password = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+            new_password = ''.join(random.choices(
+                string.ascii_letters + string.digits, k=8))
             user.password = make_password(new_password)
             user.save()
 

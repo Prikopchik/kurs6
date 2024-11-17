@@ -3,18 +3,21 @@ from catalog.models import Category, Product
 import json
 import os
 
+
 class Command(BaseCommand):
     help = 'Load categories and products from fixtures'
 
     @staticmethod
     def json_read_categories():
-        fixture_path = os.path.join('myproject', 'catalog', 'fixtures', 'categories.json')
+        fixture_path = os.path.join(
+            'myproject', 'catalog', 'fixtures', 'categories.json')
         with open(fixture_path, 'r', encoding='utf-8') as f:
             return json.load(f)
 
     @staticmethod
     def json_read_products():
-        fixture_path = os.path.join('myproject', 'catalog', 'fixtures', 'products.json')
+        fixture_path = os.path.join(
+            'myproject', 'catalog', 'fixtures', 'products.json')
         with open(fixture_path, 'r', encoding='utf-8') as f:
             return json.load(f)
 
@@ -30,8 +33,8 @@ class Command(BaseCommand):
         for category_data in Command.json_read_categories():
             category_for_create.append(
                 Category(
-                    name=category_data['fields']['name'], 
-                    description=category_data['fields'].get('description', '')  
+                    name=category_data['fields']['name'],
+                    description=category_data['fields'].get('description', '')
                 )
             )
         Category.objects.bulk_create(category_for_create)
@@ -43,9 +46,11 @@ class Command(BaseCommand):
                     name=product_data['fields']['name'],
                     description=product_data['fields'].get('description', ''),
                     price=product_data['fields']['price'],
-                    category=Category.objects.get(pk=product_data['fields']['category']),
+                    category=Category.objects.get(
+                        pk=product_data['fields']['category']),
                 )
             )
         Product.objects.bulk_create(product_for_create)
 
-        self.stdout.write(self.style.SUCCESS('Successfully loaded categories and products'))
+        self.stdout.write(self.style.SUCCESS(
+            'Successfully loaded categories and products'))
