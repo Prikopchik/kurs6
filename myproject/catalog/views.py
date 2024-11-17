@@ -11,11 +11,11 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
 class HomeView(TemplateView):
-    template_name = 'catalog/home.html'
+    template_name = 'home.html'
 
 
 class ContactView(FormView):
-    template_name = 'catalog/contact.html'
+    template_name = 'contact.html'
     form_class = ContactForm
     success_url = '/contact/'
 
@@ -27,20 +27,20 @@ class ContactView(FormView):
 
 class IndexView(ListView):
     model = Product
-    template_name = 'catalog/index.html'
+    template_name = 'index.html'
     context_object_name = 'object_list'
 
 
 class BlogPostListView(ListView):
     model = BlogPost
-    template_name = 'catalog/blogpost_list.html'
+    template_name = 'blogpost_list.html'
     context_object_name = 'posts'
     queryset = BlogPost.objects.filter(is_published=True)
 
 
 class BlogPostDetailView(DetailView):
     model = BlogPost
-    template_name = 'catalog/blogpost_detail.html'
+    template_name = 'blogpost_detail.html'
     context_object_name = 'post'
 
     def get_object(self, queryset=None):
@@ -53,7 +53,7 @@ class BlogPostDetailView(DetailView):
 class BlogPostCreateView(CreateView):
     model = BlogPost
     form_class = BlogPostForm
-    template_name = 'catalog/blogpost_form.html'
+    template_name = 'blogpost_form.html'
     fields = ['title', 'slug', 'content', 'preview_image', 'is_published']
 
     def form_valid(self, form):
@@ -66,7 +66,7 @@ class BlogPostCreateView(CreateView):
 class BlogPostUpdateView(UpdateView):
     model = BlogPost
     form_class = BlogPostForm
-    template_name = 'catalog/blogpost_form.html'
+    template_name = 'blogpost_form.html'
     fields = ['title', 'slug', 'content', 'preview_image', 'is_published']
 
     def get_success_url(self):
@@ -75,13 +75,13 @@ class BlogPostUpdateView(UpdateView):
 
 class BlogPostDeleteView(DeleteView):
     model = BlogPost
-    template_name = 'catalog/blogpost_confirm_delete.html'
+    template_name = 'blogpost_confirm_delete.html'
     success_url = reverse_lazy('blog_list')
 
 
-class ProductListView(LoginRequiredMixin, ListView):
+class ProductListView(ListView):
     model = Product
-    template_name = 'catalog/product_list.html'
+    template_name = 'product_list.html'
     context_object_name = 'products'
 
     def get_context_data(self, **kwargs):
@@ -105,14 +105,14 @@ class ProductListView(LoginRequiredMixin, ListView):
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
-    template_name = 'catalog/product_detail.html'
+    template_name = 'product_detail.html'
     context_object_name = 'product'
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
-    template_name = 'catalog/product_form.html'
+    template_name = 'product_form.html'
     success_url = reverse_lazy('product_list')
 
     def form_valid(self, form):
@@ -123,7 +123,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
-    template_name = 'catalog/product_form.html'
+    template_name = 'product_form.html'
     success_url = reverse_lazy('product_list')
 
     def dispatch(self, request, *args, **kwargs):
@@ -135,33 +135,33 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
-    template_name = 'catalog/product_confirm_delete.html'
+    template_name = 'product_confirm_delete.html'
     success_url = reverse_lazy('product_list')
 
 
 class VersionCreateView(CreateView):
     model = Version
     form_class = VersionForm
-    template_name = 'catalog/product_version_form.html'
+    template_name = 'product_version_form.html'
     success_url = reverse_lazy('product_version_list')
 
 
 class VersionUpdateView(UpdateView):
     model = Version
     form_class = VersionForm
-    template_name = 'catalog/product_version_form.html'
+    template_name = 'product_version_form.html'
     success_url = reverse_lazy('product_version_list')
 
 
 class VersionListView(ListView):
     model = Version
-    template_name = 'catalog/product_version_list.html'
+    template_name = 'product_version_list.html'
     context_object_name = 'product_versions'
 
 
 class VersionDeleteView(DeleteView):
     model = Version
-    template_name = 'catalog/product_version_confirm_delete.html'
+    template_name = 'product_version_confirm_delete.html'
     success_url = reverse_lazy('product_version_list')
 
 

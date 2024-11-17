@@ -1,13 +1,15 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import CustomUser
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
-class RegistrationForm(forms.ModelForm):
+class RegistrationForm(UserCreationForm):
     password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
-        model = User
-        fields = ['email', 'password']
+        model = CustomUser
+        fields = ['email', 'password1', 'password2', 'avatar', 'phone_number', 'country']
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -26,3 +28,7 @@ class PasswordResetForm(forms.Form):
             raise forms.ValidationError(
                 "Пользователь с таким email не найден.")
         return email
+    
+
+class LoginForm(AuthenticationForm):
+    pass
