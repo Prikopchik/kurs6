@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отмена публикации продукта</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Отмена публикации продукта</h1>
+        <p>Вы уверены, что хотите отменить публикацию продукта <strong>{{ product.name }}</strong>?</p>
+
+        {% if user.has_perm('catalog.can_unpublish_product') %}
+            <form action="{% url 'unpublish_product' product.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Да, отменить публикацию</button>
+                <a href="{% url 'product_list' %}" class="btn btn-secondary">Отмена</a>
+            </form>
+        {% else %}
+            <p class="text-warning">У вас нет прав для выполнения этого действия.</p>
+            <a href="{% url 'product_list' %}" class="btn btn-secondary">Вернуться назад</a>
+        {% endif %}
+    </div>
+</body>
+</html>
