@@ -9,6 +9,7 @@ from django.urls import reverse_lazy, reverse
 from django.utils.text import slugify
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
+from .services import get_products_by_category
 
 
 class HomeView(TemplateView):
@@ -213,3 +214,8 @@ class ProductEditCategoryView(PermissionRequiredMixin, UpdateView):
     permission_required = 'catalog.can_edit_category'
     template_name = 'product_form.html'
     fields = ['category']
+
+
+    def products_by_category(request, category_id):
+        products = get_products_by_category(category_id)
+        return render(request, 'catalog/products_by_category.html', {'products': products})

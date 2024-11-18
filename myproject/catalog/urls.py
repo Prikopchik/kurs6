@@ -1,6 +1,9 @@
+from django.shortcuts import get_object_or_404
 from django.urls import path
-
+from django.shortcuts import render
+from django.views.decorators.cache import cache_page
 from accounts.views import CustomLoginView, RegisterView
+from myproject.catalog.models import Product
 from . import views
 from .views import ProductListView, ProductDetailView, ProductCreateView, ProductUpdateView, ProductDeleteView, VersionCreateView, VersionDeleteView, VersionListView, VersionUpdateView
 
@@ -36,4 +39,11 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('activate/<uidb64>/<token>/', RegisterView.activate, name='activate'),
     path('login/', CustomLoginView.as_view(), name='login'),
+    path('category/<int:category_id>/', views.products_by_category, name='products_by_category'),
 ]
+
+
+@cache_page(60 * 15)  
+def product_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    return render(request, 'catalog/product_detail.html', {'product': product})
