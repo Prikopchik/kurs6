@@ -216,6 +216,6 @@ class ProductEditCategoryView(PermissionRequiredMixin, UpdateView):
     fields = ['category']
 
 
-    def products_by_category(request, category_id):
-        products = get_products_by_category(category_id)
-        return render(request, 'catalog/products_by_category.html', {'products': products})
+def products_by_category(request, category_id):
+    products = get_products_by_category(category_id)
+    return render(request, 'catalog/products_by_category.html', {'products': products})
