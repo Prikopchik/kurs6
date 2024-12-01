@@ -10,6 +10,7 @@ from django.utils.text import slugify
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from .services import get_products_by_category
+from django.views.decorators.cache import cache_page
 
 
 class HomeView(TemplateView):
@@ -219,3 +220,9 @@ class ProductEditCategoryView(PermissionRequiredMixin, UpdateView):
 def products_by_category(request, category_id):
     products = get_products_by_category(category_id)
     return render(request, 'catalog/products_by_category.html', {'products': products})
+
+
+@cache_page(60 * 15)  
+def product_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    return render(request, 'catalog/product_detail.html', {'product': product})

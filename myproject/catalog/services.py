@@ -1,5 +1,5 @@
 from django.core.cache import cache
-from myproject.catalog.models import Product
+from .models import Product
 
 
 def get_products_by_category(category_id):

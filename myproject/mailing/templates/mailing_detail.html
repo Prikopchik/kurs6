@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Детали рассылки</h2>
+<p><strong>Сообщение:</strong> {{ mailing.message.subject }}</p>
+<p><strong>Статус:</strong> {{ mailing.status }}</p>
+<p><strong>Дата начала:</strong> {{ mailing.start_time }}</p>
+<p><strong>Дата окончания:</strong> {{ mailing.end_time }}</p>
+<p><strong>Получатели:</strong></p>
+<ul>
+  {% for recipient in mailing.recipients.all %}
+    <li>{{ recipient.email }} ({{ recipient.name }})</li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'mailing_edit' mailing.pk %}">Редактировать</a>
+<form action="{% url 'mailing_delete' mailing.pk %}" method="post">
+  {% csrf_token %}
+  <button type="submit">Удалить</button>
+</form>
+{% endblock %}
