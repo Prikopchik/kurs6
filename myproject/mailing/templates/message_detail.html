@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ message.subject }}</h2>
+<p>{{ message.body }}</p>
+<a href="{% url 'message_edit' message.pk %}">Редактировать</a>
+<form action="{% url 'message_delete' message.pk %}" method="post">
+  {% csrf_token %}
+  <button type="submit">Удалить</button>
+</form>
+{% endblock %}

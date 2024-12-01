@@ -3,7 +3,7 @@ from django.urls import path
 from django.shortcuts import render
 from django.views.decorators.cache import cache_page
 from accounts.views import CustomLoginView, RegisterView
-from myproject.catalog.models import Product
+from .models import Product
 from . import views
 from .views import ProductListView, ProductDetailView, ProductCreateView, ProductUpdateView, ProductDeleteView, VersionCreateView, VersionDeleteView, VersionListView, VersionUpdateView
 
@@ -39,6 +39,7 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('activate/<uidb64>/<token>/', RegisterView.activate, name='activate'),
     path('login/', CustomLoginView.as_view(), name='login'),
+    
     path('category/<int:category_id>/', views.products_by_category, name='products_by_category'),
 ]
 
